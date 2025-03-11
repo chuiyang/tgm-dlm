@@ -44,7 +44,7 @@ class ChEBIdataset(Dataset):
         print('corruption prob is {}'.format(self.corrupt_prob))
         self.mask_desc= mask_desc
         print('mask_desc is {}'.format(self.mask_desc))
-        assert split in ['train','test','validation','mini','train_val_256']
+        assert split in ['train','test','validation','mini','train_val_256', 'train_val_256_demo', 'test_demo']
         self.ori_data = self.get_ori_data()
         self.load_state=load_state
         if load_state:

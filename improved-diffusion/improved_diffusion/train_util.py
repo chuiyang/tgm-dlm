@@ -110,14 +110,14 @@ class TrainLoop:
                 find_unused_parameters=False,
             )
         else:
-            assert False
-            # if dist.get_world_size() > 1:
-            #     logger.warn(
-            #         "Distributed training requires CUDA. "
-            #         "Gradients will not be synchronized properly!"
-            #     )
-            # self.use_ddp = False
-            # self.ddp_model = self.model
+            # assert False
+            if dist.get_world_size() > 1:
+                logger.warn(
+                    "Distributed training requires CUDA. "
+                    "Gradients will not be synchronized properly!"
+                )
+            self.use_ddp = False
+            self.ddp_model = self.model
         self.model_params = list(self.ddp_model.parameters())
         self.master_params = self.model_params
         self.opt = AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)

@@ -43,7 +43,8 @@ def setup_dist(rank,world_size,port='12145'):
     # dist.init_process_group(backend=backend, init_method="env://")
     os.environ['MASTER_ADDR'] = 'localhost'
     os.environ['MASTER_PORT'] = port
-    dist.init_process_group(backend='nccl', rank=rank,world_size=world_size)
+    # dist.init_process_group(backend='nccl', rank=rank,world_size=world_size)
+    dist.init_process_group(backend='gloo', rank=0, world_size=1)  # 使用 gloo 並設置為單進程
 
 def dev():
     """

@@ -1400,8 +1400,8 @@ class GaussianDiffusion:
             print('Recieving max t:{}'.format(self.maxt))
         ##########################################
         # th.tensor([0]).to('cuda')
-        x_start_mean = model.model.module.get_embeds(input_ids)
-        mix_start_mean = model.model.module.get_embeds(mix_ids)
+        x_start_mean = model.model.get_embeds(input_ids)
+        mix_start_mean = model.model.get_embeds(mix_ids)
         # th.tensor([0]).to('cuda')
         # print(x_start_mean.device)
         std = _extract_into_tensor(self.sqrt_one_minus_alphas_cumprod,
@@ -1415,7 +1415,7 @@ class GaussianDiffusion:
         if noise is None:
             noise = th.randn_like(mix_start)
         x_t = self.q_sample(mix_start, t, noise=noise) # reparametrization trick.
-        get_logits = model.model.module.get_logits
+        get_logits = model.model.get_logits
 
         terms = {}
 
@@ -1783,7 +1783,7 @@ def _extract_into_tensor(arr, timesteps, broadcast_shape):
                             dimension equal to the length of timesteps.
     :return: a tensor of shape [batch_size, 1, ...] where the shape has K dims.
     """
-    res = th.from_numpy(arr).to(device=timesteps.device)[timesteps].float()
+    res = th.from_numpy(arr).float().to(device=timesteps.device)[timesteps].float()
     while len(res.shape) < len(broadcast_shape):
         res = res[..., None]
     return res.expand(broadcast_shape)

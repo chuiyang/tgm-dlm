@@ -34,12 +34,12 @@ def main_worker(rank,world_size):
     args = create_argparser().parse_args()
     set_seed(args.seed)
 
-    if rank == 0:
-        wandb.init(
-            project = "DiffusionLMRegexAug",
-            config = args.__dict__,
-        )
-        print(wandb.config)
+    # if rank == 0:
+    #     wandb.init(
+    #         project = "DiffusionLMRegexAug",
+    #         config = args.__dict__,
+    #     )
+    #     print(wandb.config)
 
 
     dist_util.setup_dist(rank,world_size) 
@@ -89,7 +89,7 @@ def main_worker(rank,world_size):
     train_dataset = ChEBIdataset(
         dir='../../datasets/SMILES/',
         smi_tokenizer=smtokenizer,
-        split='train_val_256',
+        split='train_val_256_demo',
         replace_desc=False,
         corrupt_prob=0.,
         mask_desc=False
@@ -204,4 +204,5 @@ if __name__ == "__main__":
     os.environ['CUDA_DEVICES_ORDER']='PCI_BUS_ID'
     os.environ['CUDA_VISIBLE_DEVICES']='0'
     world_size=1
-    mp.spawn(main_worker,args=(world_size,),nprocs=world_size,join=True)
+    # mp.spawn(main_worker,args=(world_size,),nprocs=world_size,join=True)
+    main_worker(rank=0, world_size=world_size)
