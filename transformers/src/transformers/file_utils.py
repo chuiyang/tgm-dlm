@@ -1945,7 +1945,8 @@ def cached_path(
                     zip_file.close()
             elif tarfile.is_tarfile(output_path):
                 tar_file = tarfile.open(output_path)
-                tar_file.extractall(output_path_extracted)
+                raise ValueError('Cannot extract all tarfiles since critical issue in T-company')
+                # tar_file.extract  ===   all(output_path_extracted)
                 tar_file.close()
             else:
                 raise EnvironmentError(f"Archive format of {output_path} could not be identified")

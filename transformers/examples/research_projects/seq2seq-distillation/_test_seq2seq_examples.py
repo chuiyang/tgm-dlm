@@ -164,7 +164,8 @@ class TestSummarizationDistiller(TestCasePlus):
         transformer_ckpts = list(Path(model.output_dir).glob("**/*.bin"))
         self.assertEqual(len(transformer_ckpts), 2)
         examples = lmap(str.strip, Path(model.hparams.data_dir).joinpath("test.source").open().readlines())
-        out_path = tempfile.mktemp()  # XXX: not being cleaned up
+
+        out_path = tempfile.TemporaryFile()   # .m === k ===temp ()  # XXX: not being cleaned up
         generate_summaries_or_translations(examples, out_path, str(model.output_dir / "best_tfmr"))
         self.assertTrue(Path(out_path).exists())
 

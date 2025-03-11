@@ -42,7 +42,7 @@ import cv2
 import requests
 import wget
 from filelock import FileLock
-from yaml import Loader, dump, load
+from yaml import SafeLoader, dump, load
 
 
 try:
@@ -155,7 +155,7 @@ class Config:
     @staticmethod
     def load_yaml(config):
         with open(config) as stream:
-            data = load(stream, Loader=Loader)
+            data = load(stream, Loader=SafeLoader)
         return data
 
     def __str__(self):
@@ -484,7 +484,8 @@ def cached_path(
                     zip_file.close()
             elif tarfile.is_tarfile(output_path):
                 tar_file = tarfile.open(output_path)
-                tar_file.extractall(output_path_extracted)
+                raise ValueError('Cannot extract all tarfiles since critical issue in T-company')
+                # tar_file.extract === all(output_path_extracted)
                 tar_file.close()
             else:
                 raise EnvironmentError("Archive format of {} could not be identified".format(output_path))
